@@ -528,7 +528,7 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
                           </div>
                     </div>
 
-                    {/* STEP 3 */}
+                    {/* STEP 3 (With Troubleshooting) */}
                     <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
                           <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
                              <span className="font-bold text-sm text-slate-200">Step 3: Save & Push to GitHub</span>
@@ -553,6 +553,48 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
                                 <span>git push origin main</span>
                              </div>
                           </div>
+                    </div>
+
+                    {/* Error Handling for Nested Git */}
+                    <div className="bg-amber-950/30 border border-amber-500/30 p-4 rounded-lg animate-in fade-in">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="text-amber-400 shrink-0 mt-0.5" size={18} />
+                        <div>
+                            <h4 className="text-sm font-bold text-amber-400">Seeing "does not have a commit checked out" or "fatal"?</h4>
+                            <p className="text-xs text-slate-400 mt-1 mb-3 leading-relaxed">
+                              This error happens because the Shopify CLI created a <strong>nested git repository</strong> (a `.git` folder inside your `dollarapp-blog` folder). Git confuses this with a submodule.
+                            </p>
+                            <div className="bg-black p-3 rounded border border-amber-500/20 font-mono text-xs space-y-2 relative group">
+                              <button 
+                                onClick={() => navigator.clipboard.writeText('cd dollarapp-blog && rm -rf .git && cd .. && git add . && git commit -m "Fix nested git"')}
+                                className="absolute top-2 right-2 p-1.5 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                                title="Copy all commands"
+                              ><Copy size={12}/></button>
+                              
+                              <div className="text-slate-500"># Run these commands to fix the conflict:</div>
+                              <div className="flex gap-2">
+                                  <span className="text-indigo-400">$</span>
+                                  <span className="text-white">cd dollarapp-blog</span>
+                                  <span className="text-slate-500"># Enter the inner folder</span>
+                              </div>
+                              <div className="flex gap-2">
+                                  <span className="text-indigo-400">$</span>
+                                  <span className="text-white">rm -rf .git</span>
+                                  <span className="text-slate-500"># Delete the inner git config</span>
+                              </div>
+                              <div className="flex gap-2">
+                                  <span className="text-indigo-400">$</span>
+                                  <span className="text-white">cd ..</span>
+                                  <span className="text-slate-500"># Go back to project root</span>
+                              </div>
+                              <div className="flex gap-2">
+                                  <span className="text-indigo-400">$</span>
+                                  <span className="text-white">git add .</span>
+                                  <span className="text-slate-500"># Now try adding again!</span>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
                     </div>
 
                     {/* STEP 4 */}
