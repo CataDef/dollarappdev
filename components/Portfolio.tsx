@@ -4,27 +4,30 @@ import { Play } from 'lucide-react';
 
 const items: PortfolioItem[] = [
   {
+    id: 'invoice-app',
     title: "Pro PDF Invoices & Docs",
     description: "Auto-generate professional PDF invoices, receipts, packing slips, and return forms. Fully customizable templates.",
     category: "Operations & Accounting",
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800&h=500"
   },
   {
+    id: 'social-proof',
+    title: "Social Proof Pop",
+    description: "Real-time purchase notifications that create FOMO and drive urgency. Increase conversion rates by 15%.",
+    category: "Marketing",
+    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=500"
+  },
+  {
+    id: 'return-wizard',
     title: "Return Wizard",
     description: "Automated returns portal that integrates with 3PL providers to restock instantly.",
     category: "Operations",
     image: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&q=80&w=800&h=500"
-  },
-  {
-    title: "Social Proof Pop",
-    description: "Real-time purchase notifications that create FOMO and drive urgency.",
-    category: "Marketing",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800&h=500"
   }
 ];
 
 interface PortfolioProps {
-  onOpenApp: () => void;
+  onOpenApp: (appId: string) => void;
 }
 
 const Portfolio: React.FC<PortfolioProps> = ({ onOpenApp }) => {
@@ -51,17 +54,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ onOpenApp }) => {
                   alt={item.title} 
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
-                {idx === 0 && (
-                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-950/60 backdrop-blur-sm">
-                     <button 
-                       onClick={onOpenApp}
-                       className="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all shadow-lg shadow-brand-600/50"
-                     >
-                       <Play size={16} fill="currentColor" />
-                       Launch App
-                     </button>
-                  </div>
-                )}
+                <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-950/60 backdrop-blur-sm">
+                    {item.id !== 'return-wizard' ? (
+                      <button 
+                        onClick={() => onOpenApp(item.id)}
+                        className="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all shadow-lg shadow-brand-600/50"
+                      >
+                        <Play size={16} fill="currentColor" />
+                        Launch App
+                      </button>
+                    ) : (
+                      <span className="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg font-medium border border-slate-700">Coming Soon</span>
+                    )}
+                </div>
               </div>
               <div className="p-6 flex-1 flex flex-col">
                 <div className="text-xs font-bold tracking-wider text-brand-500 uppercase mb-2">{item.category}</div>

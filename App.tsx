@@ -6,16 +6,22 @@ import Portfolio from './components/Portfolio';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
 import InvoiceAppDemo from './components/demos/InvoiceAppDemo';
+import SocialProofDemo from './components/demos/SocialProofDemo';
 import { Terminal } from 'lucide-react';
 
-type Page = 'landing' | 'invoice-app';
+type Page = 'landing' | 'invoice-app' | 'social-proof';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
 
-  // Dedicated Application Page View
+  // Dedicated Invoice Application Page View
   if (currentPage === 'invoice-app') {
     return <InvoiceAppDemo onExit={() => setCurrentPage('landing')} />;
+  }
+
+  // Dedicated Social Proof Application Page View
+  if (currentPage === 'social-proof') {
+    return <SocialProofDemo onExit={() => setCurrentPage('landing')} />;
   }
 
   // Main Landing Page View
@@ -49,7 +55,7 @@ const App: React.FC = () => {
       {/* The Gemini Powered Section */}
       <AppIdeaGenerator />
       
-      <Portfolio onOpenApp={() => setCurrentPage('invoice-app')} />
+      <Portfolio onOpenApp={(appId) => setCurrentPage(appId as Page)} />
       <Pricing />
       <Contact />
 

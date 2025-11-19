@@ -9,6 +9,7 @@ export interface ShopifyAppIdea {
 }
 
 export interface PortfolioItem {
+  id: string;
   title: string;
   description: string;
   category: string;
