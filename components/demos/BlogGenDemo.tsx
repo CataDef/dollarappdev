@@ -1,22 +1,26 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, LayoutDashboard, FileText, Settings, Rocket, 
   CheckCircle2, Bot, Image as ImageIcon, Globe, DollarSign,
   BarChart3, Database, Terminal, Play, Code, RefreshCw, Sparkles,
-  Github, ExternalLink, Copy, MonitorPlay, AlertTriangle
+  Github, ExternalLink, Copy, MonitorPlay, AlertTriangle, Trash2,
+  ShoppingBag, ArrowRight, Zap, Search, TrendingUp, Menu, User, ChevronRight
 } from 'lucide-react';
 
 interface BlogGenDemoProps {
   onExit: () => void;
 }
 
-type Tab = 'dashboard' | 'preview' | 'pricing' | 'deploy';
+type Tab = 'home' | 'dashboard' | 'preview' | 'pricing' | 'deploy';
+type DemoView = 'store_home' | 'product' | 'blog';
 
 const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('deploy'); // Default to deploy to show steps immediately
+  const [activeTab, setActiveTab] = useState<Tab>('home'); 
+  const [demoView, setDemoView] = useState<DemoView>('store_home');
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [guideMode, setGuideMode] = useState<'sim' | 'real'>('real'); // Default to real guide
+  const [guideMode, setGuideMode] = useState<'sim' | 'real'>('real'); 
   
   // Deploy Sim State
   const [deployLogs, setDeployLogs] = useState<string[]>([]);
@@ -72,6 +76,370 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
     }
   }, [deployLogs]);
 
+  const getUrl = () => {
+    switch(demoView) {
+      case 'store_home': return 'mystore.com';
+      case 'blog': return 'mystore.com/blog/eco-friendly-brewing';
+      case 'product': return 'mystore.com/products/ceramic-coffee-set';
+    }
+  };
+
+  // --- MERCHANT LANDING PAGE VIEW ---
+  if (activeTab === 'home') {
+    return (
+      <div className="min-h-screen bg-white text-slate-900 font-sans overflow-y-auto">
+        {/* Navigation */}
+        <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+          <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
+               <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-600/20">
+                  <Bot size={24} />
+               </div>
+               BlogGen AI
+            </div>
+            <div className="flex items-center gap-6">
+               <button onClick={onExit} className="text-slate-500 hover:text-slate-900 font-medium text-sm flex items-center gap-2">
+                 <ArrowLeft size={16} /> Back to DollarApp
+               </button>
+               <button 
+                 onClick={() => setActiveTab('dashboard')}
+                 className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-sm transition-all shadow-lg"
+               >
+                 Go to App Dashboard
+               </button>
+            </div>
+          </div>
+        </nav>
+
+        {/* Hero Section */}
+        <header className="pt-20 pb-32 px-6">
+           <div className="container mx-auto text-center max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 text-indigo-600 text-sm font-bold mb-8 border border-indigo-100">
+                 <Sparkles size={16} />
+                 <span>New: GPT-4o Integration Available</span>
+              </div>
+              <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8 text-slate-900 leading-[1.1]">
+                 Turn Your Store Into An <br/>
+                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">SEO Traffic Machine</span>
+              </h1>
+              <p className="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                 Stop spending hours writing blogs. Our AI analyzes your products, finds high-traffic keywords, and writes SEO-optimized articles that rank on Google automatically.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                 <button onClick={() => setActiveTab('dashboard')} className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-lg shadow-xl shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                    Start Free Trial <ArrowRight size={20} />
+                 </button>
+                 <button className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
+                    View Sample Store
+                 </button>
+              </div>
+           </div>
+        </header>
+
+        {/* Visual Demo Section */}
+        <section className="bg-slate-50 py-24 border-y border-slate-200 overflow-hidden">
+           <div className="container mx-auto px-6">
+              <div className="text-center mb-12">
+                 <h2 className="text-3xl font-bold mb-4">See The Customer Journey</h2>
+                 <p className="text-slate-500">Interact with the demo below to see how our AI blogs drive sales.</p>
+              </div>
+
+              {/* Interactive Window */}
+              <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col h-[800px] md:h-[750px]">
+                 {/* Browser Chrome */}
+                 <div className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex items-center gap-4">
+                    <div className="flex gap-2">
+                       <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                       <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                       <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                    </div>
+                    <div className="flex-1 bg-white rounded-md px-3 py-1.5 text-xs text-slate-500 flex items-center gap-3 shadow-sm">
+                       <div className="flex items-center gap-1 text-slate-400">
+                          <Globe size={12} />
+                          <span className="font-mono">https://</span>
+                       </div>
+                       <span className="text-slate-900 font-medium">{getUrl()}</span>
+                    </div>
+                    
+                    {/* Navigation Helper for Demo */}
+                    <div className="flex gap-2">
+                       <button 
+                         onClick={() => setDemoView('store_home')}
+                         className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-200 rounded-md transition-colors"
+                         title="Back to Home"
+                       >
+                          <LayoutDashboard size={14} />
+                       </button>
+                    </div>
+                 </div>
+
+                 {/* Content Area */}
+                 <div className="flex-1 overflow-y-auto relative scroll-smooth">
+                    
+                    {/* --- VIEW 1: STORE HOME --- */}
+                    {demoView === 'store_home' && (
+                      <div className="animate-in fade-in duration-500">
+                         {/* Store Nav */}
+                         <div className="px-8 py-6 flex justify-between items-center border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-10">
+                            <div className="font-serif text-2xl font-black tracking-tighter">Lumina.</div>
+                            <div className="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-slate-500">
+                              <span className="text-slate-900">Shop</span>
+                              <span>About</span>
+                              <span>Journal</span>
+                            </div>
+                            <div className="flex gap-4 text-slate-900">
+                               <Search size={20} />
+                               <ShoppingBag size={20} />
+                            </div>
+                         </div>
+
+                         {/* Hero */}
+                         <div className="relative h-[500px] bg-slate-900 flex items-center justify-center overflow-hidden">
+                            <img 
+                               src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=2000" 
+                               alt="Coffee Shop" 
+                               className="absolute inset-0 w-full h-full object-cover opacity-60"
+                            />
+                            <div className="relative z-10 text-center text-white px-6">
+                               <div className="uppercase tracking-[0.3em] text-xs font-bold mb-4 text-amber-400">Est. 2024</div>
+                               <h2 className="text-5xl md:text-7xl font-serif mb-6">Roasting with <br/> Conscience.</h2>
+                               <button className="px-8 py-4 bg-white text-slate-900 font-bold uppercase tracking-widest text-xs hover:bg-amber-400 transition-colors">
+                                  Shop Collection
+                               </button>
+                            </div>
+                         </div>
+
+                         {/* Blog Teaser Section */}
+                         <div className="py-20 px-8 max-w-6xl mx-auto">
+                            <div className="flex justify-between items-end mb-12">
+                               <div>
+                                  <h3 className="text-3xl font-serif font-bold mb-2">From The Journal</h3>
+                                  <p className="text-slate-500">Stories about sustainable living and brewing.</p>
+                               </div>
+                               <button className="text-sm font-bold underline decoration-2 decoration-amber-400 underline-offset-4">View All Stories</button>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-12 items-center">
+                               {/* Main Blog Card - Clickable */}
+                               <div 
+                                 onClick={() => setDemoView('blog')}
+                                 className="group cursor-pointer"
+                               >
+                                  <div className="overflow-hidden rounded-xl mb-6 relative">
+                                     <div className="absolute top-4 left-4 bg-white px-3 py-1 text-xs font-bold uppercase tracking-wider z-10">
+                                        Freshly Brewed
+                                     </div>
+                                     <div className="absolute inset-0 bg-indigo-900/0 group-hover:bg-indigo-900/10 transition-colors z-10"></div>
+                                     <img 
+                                        src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800" 
+                                        alt="Coffee Brewing"
+                                        className="w-full h-[300px] object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                     />
+                                     
+                                     {/* AI Badge */}
+                                     <div className="absolute bottom-4 right-4 bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg flex items-center gap-2 z-20">
+                                       <Bot size={14} /> AI Generated
+                                     </div>
+                                  </div>
+                                  <div>
+                                     <div className="text-xs font-bold text-amber-600 uppercase tracking-widest mb-2">Sustainability</div>
+                                     <h4 className="text-2xl font-serif font-bold mb-3 group-hover:text-indigo-700 transition-colors">
+                                        The Ultimate Guide to Eco-Friendly Coffee Brewing
+                                     </h4>
+                                     <p className="text-slate-500 leading-relaxed mb-4">
+                                        Discover how to brew your morning cup without harming the planet. We explore ceramic filters, fair trade beans, and zero-waste methods...
+                                     </p>
+                                     <div className="flex items-center gap-2 text-sm font-bold text-slate-900 group-hover:gap-4 transition-all">
+                                        Read Article <ArrowRight size={16} />
+                                     </div>
+                                  </div>
+                               </div>
+
+                               {/* Secondary Card */}
+                               <div className="space-y-8 opacity-50 pointer-events-none grayscale">
+                                  <div className="flex gap-6">
+                                     <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=200&q=80" className="w-24 h-24 object-cover rounded-lg" />
+                                     <div>
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-1">Culture</div>
+                                        <h5 className="font-serif font-bold text-lg mb-2">The History of Arabica Beans</h5>
+                                        <span className="text-xs font-bold underline">Read More</span>
+                                     </div>
+                                  </div>
+                                  <div className="flex gap-6">
+                                     <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=200&q=80" className="w-24 h-24 object-cover rounded-lg" />
+                                     <div>
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-1">Recipes</div>
+                                        <h5 className="font-serif font-bold text-lg mb-2">5 Summer Cold Brew Recipes</h5>
+                                        <span className="text-xs font-bold underline">Read More</span>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                    )}
+
+                    {/* --- VIEW 2: BLOG POST --- */}
+                    {demoView === 'blog' && (
+                       <div className="max-w-3xl mx-auto p-12 animate-in fade-in">
+                          {/* Breadcrumb */}
+                          <div className="flex items-center gap-2 text-xs text-slate-500 mb-8 cursor-pointer hover:text-indigo-600" onClick={() => setDemoView('store_home')}>
+                             <ArrowLeft size={12} /> Back to Journal
+                          </div>
+
+                          <div className="text-center mb-12">
+                             <div className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full mb-4 uppercase tracking-wider">Sustainable Living</div>
+                             <h1 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-6 leading-tight">
+                                The Ultimate Guide to Eco-Friendly Coffee Brewing
+                             </h1>
+                             <div className="flex items-center justify-center gap-3 text-sm text-slate-500">
+                                <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+                                   <Bot size={16} />
+                                </div>
+                                <span>Written by AI Editor • 5 min read</span>
+                             </div>
+                          </div>
+
+                          <img 
+                             src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1000" 
+                             className="w-full h-64 md:h-[400px] object-cover rounded-2xl mb-12 shadow-lg"
+                             alt="Coffee Brewing"
+                          />
+
+                          <div className="prose prose-lg prose-slate mx-auto">
+                             <p className="lead text-xl text-slate-600 mb-8">
+                                Coffee is more than just a morning ritual; it's a global industry that impacts millions of lives and ecosystems. 
+                                As consumers become more conscious of their environmental footprint, the demand for <span className="bg-yellow-100 px-1">sustainable coffee brewing</span> methods has skyrocketed.
+                             </p>
+                             
+                             <h3 className="text-2xl font-bold text-slate-900 mt-12 mb-4">Why Choose Ceramic Filters?</h3>
+                             <p className="mb-6 text-slate-600">
+                                Unlike paper filters which are single-use and contribute to waste, or metal filters which can alter the taste, 
+                                ceramic filters offer a perfect balance. They are reusable, easy to clean, and provide a clean cup without stripping away the essential oils.
+                             </p>
+
+                             {/* Embedded Product CTA */}
+                             <div className="my-12 p-6 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-6 transform hover:-translate-y-1 transition-transform cursor-pointer group" onClick={() => setDemoView('product')}>
+                                <div className="relative">
+                                  <img 
+                                    src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=200&q=80" 
+                                    className="w-24 h-24 object-cover rounded-lg shadow-sm bg-white group-hover:scale-105 transition-transform"
+                                    alt="Thumbnail"
+                                  />
+                                  <div className="absolute -bottom-2 -right-2 bg-indigo-600 text-white rounded-full p-1.5 shadow-md">
+                                     <ShoppingBag size={14} />
+                                  </div>
+                                </div>
+                                <div>
+                                   <div className="text-xs font-bold text-indigo-600 uppercase mb-1">Featured Product</div>
+                                   <h4 className="font-bold text-slate-900 text-lg group-hover:text-indigo-700 transition-colors">Artisan Ceramic Coffee Set</h4>
+                                   <p className="text-sm text-slate-500 mb-3">The sustainable choice for your morning brew.</p>
+                                   <span className="text-sm font-bold text-slate-900 underline decoration-amber-400 decoration-2 underline-offset-4">Shop Now - $85.00</span>
+                                </div>
+                             </div>
+
+                             <h3 className="text-2xl font-bold text-slate-900 mt-8 mb-4">The Impact of Your Beans</h3>
+                             <p className="text-slate-600">
+                                Choosing the right equipment is only half the battle. Sourcing fair-trade, shade-grown beans ensures that your daily cup supports biodiversity...
+                             </p>
+                          </div>
+                       </div>
+                    )}
+
+                    {/* --- VIEW 3: PRODUCT PAGE --- */}
+                    {demoView === 'product' && (
+                       <div className="flex flex-col md:flex-row h-full animate-in fade-in">
+                          <div className="md:w-1/2 bg-slate-50 flex items-center justify-center p-12 relative">
+                             <button 
+                               onClick={() => setDemoView('blog')}
+                               className="absolute top-6 left-6 text-sm font-bold text-slate-500 hover:text-slate-900 flex items-center gap-2 z-10"
+                             >
+                                <ArrowLeft size={16} /> Back to Article
+                             </button>
+                             <img 
+                               src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=800&q=80" 
+                               alt="Product" 
+                               className="max-w-full max-h-[400px] object-contain drop-shadow-xl rounded-xl"
+                             />
+                          </div>
+                          <div className="md:w-1/2 p-12 flex flex-col justify-center bg-white">
+                             <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Kitchen & Dining</div>
+                             <h1 className="text-4xl font-serif font-medium text-slate-900 mb-4">Artisan Ceramic Coffee Set</h1>
+                             <div className="text-2xl font-bold text-slate-900 mb-6">$85.00</div>
+                             <div className="flex items-center gap-2 mb-8 text-sm text-emerald-600 font-bold">
+                                <CheckCircle2 size={16} /> In Stock, Ready to Ship
+                             </div>
+                             <p className="text-slate-600 mb-8 leading-relaxed">
+                                Handcrafted from sustainable clay, this set includes a pour-over dripper and serving carafe. Perfect for the morning ritual.
+                             </p>
+                             <div className="flex gap-4">
+                                <button className="flex-1 py-4 bg-slate-900 text-white font-bold rounded-lg hover:bg-black transition-colors uppercase tracking-wider text-sm">
+                                   Add to Cart
+                                </button>
+                                <button className="p-4 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-400 hover:text-red-500 transition-colors">
+                                   <Zap size={20} fill="currentColor" />
+                                </button>
+                             </div>
+                             
+                             <div className="mt-8 p-4 bg-indigo-50 rounded-lg border border-indigo-100 text-sm">
+                                <span className="font-bold text-indigo-900">Seen in our blog:</span>
+                                <p className="text-indigo-700 mt-1">"The Ultimate Guide to Eco-Friendly Coffee Brewing"</p>
+                             </div>
+                          </div>
+                       </div>
+                    )}
+
+                 </div>
+              </div>
+           </div>
+        </section>
+
+        {/* Features Grid */}
+        <section className="py-24 bg-white">
+           <div className="container mx-auto px-6">
+              <div className="grid md:grid-cols-3 gap-12">
+                 <div className="text-center px-4">
+                    <div className="w-16 h-16 mx-auto bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                       <Search size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">Smart Keyword Research</h3>
+                    <p className="text-slate-500 leading-relaxed">
+                       We scan your niche to find low-competition, high-volume keywords that your competitors are missing.
+                    </p>
+                 </div>
+                 <div className="text-center px-4">
+                    <div className="w-16 h-16 mx-auto bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                       <Zap size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">One-Click Publishing</h3>
+                    <p className="text-slate-500 leading-relaxed">
+                       Connect your store once. We handle the formatting, images, internal linking, and publishing.
+                    </p>
+                 </div>
+                 <div className="text-center px-4">
+                    <div className="w-16 h-16 mx-auto bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                       <TrendingUp size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">Commercial Intent</h3>
+                    <p className="text-slate-500 leading-relaxed">
+                       Every article is designed to sell. We intelligently weave your products into the content to drive conversions.
+                    </p>
+                 </div>
+              </div>
+           </div>
+        </section>
+
+        <footer className="bg-slate-50 py-12 border-t border-slate-200 text-center">
+           <p className="text-slate-500 mb-4">Ready to automate your content marketing?</p>
+           <button onClick={() => setActiveTab('dashboard')} className="px-6 py-3 bg-slate-900 text-white font-bold rounded-lg hover:bg-black transition-colors">
+              Install App Now
+           </button>
+        </footer>
+      </div>
+    );
+  }
+
+  // --- ADMIN / DEVELOPER VIEW (Original Implementation) ---
   return (
     <div className="flex flex-col h-screen bg-slate-950 font-sans text-slate-50 overflow-hidden">
       
@@ -79,11 +447,11 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
       <div className="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center shadow-md z-20">
         <div className="flex items-center gap-4">
           <button 
-            onClick={onExit}
+            onClick={() => setActiveTab('home')} 
             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-medium border-r border-slate-700 pr-4"
           >
             <ArrowLeft size={16} />
-            Back
+            Landing Page
           </button>
           <div className="flex items-center gap-3">
             <div className="bg-indigo-600 p-1.5 rounded text-white">
@@ -91,7 +459,7 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
             </div>
             <div>
               <h2 className="font-bold tracking-tight text-lg leading-none">AI Blog Autopilot</h2>
-              <span className="text-[10px] uppercase tracking-wider text-slate-400">Shopify App Edition</span>
+              <span className="text-[10px] uppercase tracking-wider text-slate-400">Shopify App Dashboard</span>
             </div>
           </div>
         </div>
@@ -528,70 +896,55 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
                           </div>
                     </div>
 
-                    {/* STEP 3 (With Troubleshooting) */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-                          <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
-                             <span className="font-bold text-sm text-slate-200">Step 3: Save & Push to GitHub</span>
-                             <span className="text-xs text-slate-500 uppercase font-mono">Terminal</span>
-                          </div>
-                          <div className="p-4 bg-black font-mono text-sm text-slate-300 relative group space-y-2">
-                             <button 
-                               onClick={() => navigator.clipboard.writeText('git add . && git commit -m "Init Shopify App" && git push origin main')}
-                               className="absolute top-4 right-4 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity text-white"
-                             ><Copy size={14}/></button>
-
-                             <div className="flex gap-2">
-                                <span className="text-indigo-400 select-none">$</span>
-                                <span>git add .</span>
-                             </div>
-                             <div className="flex gap-2">
-                                <span className="text-indigo-400 select-none">$</span>
-                                <span>git commit -m "Init Shopify App"</span>
-                             </div>
-                             <div className="flex gap-2">
-                                <span className="text-indigo-400 select-none">$</span>
-                                <span>git push origin main</span>
-                             </div>
-                          </div>
-                    </div>
-
-                    {/* Error Handling for Nested Git */}
-                    <div className="bg-amber-950/30 border border-amber-500/30 p-4 rounded-lg animate-in fade-in">
+                    {/* STEP 3: EMERGENCY GIT FIX */}
+                    <div className="bg-red-950/30 border border-red-500/50 p-4 rounded-lg animate-in fade-in">
                       <div className="flex items-start gap-3">
-                        <AlertTriangle className="text-amber-400 shrink-0 mt-0.5" size={18} />
-                        <div>
-                            <h4 className="text-sm font-bold text-amber-400">Seeing "does not have a commit checked out" or "fatal"?</h4>
-                            <p className="text-xs text-slate-400 mt-1 mb-3 leading-relaxed">
-                              This error happens because the Shopify CLI created a <strong>nested git repository</strong> (a `.git` folder inside your `dollarapp-blog` folder). Git confuses this with a submodule.
+                        <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={20} />
+                        <div className="w-full">
+                            <h4 className="text-sm font-bold text-red-400">GIT EMERGENCY FIX: Code not showing on GitHub?</h4>
+                            <p className="text-xs text-slate-300 mt-1 mb-3 leading-relaxed">
+                              If you see <strong>"does not have a commit checked out"</strong> or if your folder is empty on GitHub, it's because of a nested git conflict. 
+                              <br/><br/>
+                              <strong>RUN THIS EXACT COMMAND BLOCK ONE BY ONE:</strong>
                             </p>
-                            <div className="bg-black p-3 rounded border border-amber-500/20 font-mono text-xs space-y-2 relative group">
-                              <button 
-                                onClick={() => navigator.clipboard.writeText('cd dollarapp-blog && rm -rf .git && cd .. && git add . && git commit -m "Fix nested git"')}
-                                className="absolute top-2 right-2 p-1.5 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity text-white"
-                                title="Copy all commands"
-                              ><Copy size={12}/></button>
+                            <div className="bg-black p-4 rounded border border-red-500/30 font-mono text-xs space-y-4 relative group">
                               
-                              <div className="text-slate-500"># Run these commands to fix the conflict:</div>
-                              <div className="flex gap-2">
-                                  <span className="text-indigo-400">$</span>
-                                  <span className="text-white">cd dollarapp-blog</span>
-                                  <span className="text-slate-500"># Enter the inner folder</span>
+                              <div>
+                                <div className="text-slate-500 mb-1"># 1. Remove the nested .git folder (Fixes conflict)</div>
+                                <div className="flex gap-2">
+                                    <span className="text-red-500">$</span>
+                                    <span className="text-white">rm -rf dollarapp-blog/.git</span>
+                                </div>
                               </div>
-                              <div className="flex gap-2">
-                                  <span className="text-indigo-400">$</span>
-                                  <span className="text-white">rm -rf .git</span>
-                                  <span className="text-slate-500"># Delete the inner git config</span>
+
+                              <div>
+                                <div className="text-slate-500 mb-1"># 2. CRITICAL: Untrack the subfolder reference</div>
+                                <div className="flex gap-2">
+                                    <span className="text-red-500">$</span>
+                                    <span className="text-white">git rm --cached dollarapp-blog</span>
+                                </div>
                               </div>
-                              <div className="flex gap-2">
-                                  <span className="text-indigo-400">$</span>
-                                  <span className="text-white">cd ..</span>
-                                  <span className="text-slate-500"># Go back to project root</span>
+
+                              <div>
+                                <div className="text-slate-500 mb-1"># 3. Re-add everything correctly</div>
+                                <div className="flex gap-2">
+                                    <span className="text-red-500">$</span>
+                                    <span className="text-white">git add .</span>
+                                </div>
                               </div>
-                              <div className="flex gap-2">
-                                  <span className="text-indigo-400">$</span>
-                                  <span className="text-white">git add .</span>
-                                  <span className="text-slate-500"># Now try adding again!</span>
+
+                              <div>
+                                <div className="text-slate-500 mb-1"># 4. Commit and Push</div>
+                                <div className="flex gap-2">
+                                    <span className="text-red-500">$</span>
+                                    <span className="text-white">git commit -m "Fix nested git issue"</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <span className="text-red-500">$</span>
+                                    <span className="text-white">git push origin main</span>
+                                </div>
                               </div>
+
                             </div>
                         </div>
                       </div>
