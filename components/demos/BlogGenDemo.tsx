@@ -3,7 +3,7 @@ import {
   ArrowLeft, LayoutDashboard, FileText, Settings, Rocket, 
   CheckCircle2, Bot, Image as ImageIcon, Globe, DollarSign,
   BarChart3, Database, Terminal, Play, Code, RefreshCw, Sparkles,
-  Github, ExternalLink, Copy, MonitorPlay
+  Github, ExternalLink, Copy, MonitorPlay, AlertTriangle
 } from 'lucide-react';
 
 interface BlogGenDemoProps {
@@ -13,10 +13,10 @@ interface BlogGenDemoProps {
 type Tab = 'dashboard' | 'preview' | 'pricing' | 'deploy';
 
 const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [activeTab, setActiveTab] = useState<Tab>('deploy'); // Default to deploy to show steps immediately
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [guideMode, setGuideMode] = useState<'sim' | 'real'>('sim'); // 'sim' = Animation, 'real' = Actual Instructions
+  const [guideMode, setGuideMode] = useState<'sim' | 'real'>('real'); // Default to real guide
   
   // Deploy Sim State
   const [deployLogs, setDeployLogs] = useState<string[]>([]);
@@ -470,74 +470,119 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
 
                {/* --- MODE: REAL GUIDE --- */}
                {guideMode === 'real' && (
-                 <div className="space-y-6 animate-in slide-in-from-right-4">
-                    <div className="bg-indigo-900/20 border border-indigo-500/30 p-4 rounded-lg flex gap-3">
-                       <MonitorPlay className="text-indigo-400 shrink-0" size={24} />
+                 <div className="space-y-6 animate-in slide-in-from-right-4 pb-20">
+                    <div className="bg-amber-500/10 border border-amber-500/30 p-4 rounded-lg flex gap-3">
+                       <AlertTriangle className="text-amber-400 shrink-0" size={24} />
                        <div>
-                          <h3 className="font-bold text-white">Ready to build the real app?</h3>
-                          <p className="text-sm text-slate-400 mt-1">
-                             Follow these steps on your local computer (using VS Code) to fill your 
-                             <span className="font-mono text-white bg-slate-800 px-1 rounded mx-1">dollarapp-blog</span> 
-                             repository with the actual Shopify App code.
+                          <h3 className="font-bold text-white">Required: Use Your Local Terminal</h3>
+                          <p className="text-sm text-slate-300 mt-1">
+                             I cannot run commands on your computer. Open <span className="font-bold text-white">VS Code</span> or your <span className="font-bold text-white">Terminal</span>, navigate to your projects folder, and run these commands exactly as written below.
                           </p>
                        </div>
                     </div>
 
-                    <div className="space-y-4">
-                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
-                             Step 1: Clone your repository
+                    {/* STEP 1 */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                             <span className="font-bold text-sm text-slate-200">Step 1: Clone your repository</span>
+                             <span className="text-xs text-slate-500 uppercase font-mono">Terminal</span>
                           </div>
-                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
+                          <div className="p-4 bg-black font-mono text-sm text-slate-300 relative group space-y-2">
                              <button 
-                               onClick={() => navigator.clipboard.writeText('git clone https://github.com/CataDef/dollarapp-blog.git')}
-                               className="absolute top-2 right-2 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
-                             ><Copy size={12}/></button>
-                             <span className="text-indigo-400">$</span> git clone https://github.com/CataDef/dollarapp-blog.git<br/>
-                             <span className="text-indigo-400">$</span> cd dollarapp-blog
+                               onClick={() => navigator.clipboard.writeText('git clone https://github.com/CataDef/dollarapp-blog.git && cd dollarapp-blog')}
+                               className="absolute top-4 right-4 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                             ><Copy size={14}/></button>
+                             
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>git clone https://github.com/CataDef/dollarapp-blog.git</span>
+                             </div>
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>cd dollarapp-blog</span>
+                             </div>
                           </div>
-                       </div>
+                    </div>
 
-                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
-                             Step 2: Initialize Shopify App (Remix Template)
+                    {/* STEP 2 */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                             <span className="font-bold text-sm text-slate-200">Step 2: Create the Shopify App Code</span>
+                             <span className="text-xs text-slate-500 uppercase font-mono">Terminal</span>
                           </div>
-                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
+                          <div className="p-4 bg-black font-mono text-sm text-slate-300 relative group space-y-4">
+                             <div className="text-slate-500 italic text-xs border-l-2 border-slate-700 pl-2">
+                                We use the 'Remix' template which is the industry standard for Shopify Apps in 2024.
+                             </div>
+
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>npm init @shopify/app@latest -- --template remix</span>
+                             </div>
+
+                             <div className="p-3 bg-indigo-900/20 border border-indigo-500/20 rounded text-xs text-indigo-200">
+                                <strong>Prompt Answers:</strong><br/>
+                                - App Name: <span className="text-white font-bold">dollarapp-blog</span><br/>
+                                - Type of App: <span className="text-white font-bold">Public App</span> (or Custom)
+                             </div>
+                          </div>
+                    </div>
+
+                    {/* STEP 3 */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                             <span className="font-bold text-sm text-slate-200">Step 3: Save & Push to GitHub</span>
+                             <span className="text-xs text-slate-500 uppercase font-mono">Terminal</span>
+                          </div>
+                          <div className="p-4 bg-black font-mono text-sm text-slate-300 relative group space-y-2">
                              <button 
-                               onClick={() => navigator.clipboard.writeText('npm init @shopify/app@latest')}
-                               className="absolute top-2 right-2 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
-                             ><Copy size={12}/></button>
-                             <span className="text-slate-500"># This creates the actual app code</span><br/>
-                             <span className="text-indigo-400">$</span> npm init @shopify/app@latest<br/>
-                             <span className="text-slate-500"># Follow prompt: Name it "dollarapp-blog", select "Remix"</span>
-                          </div>
-                       </div>
+                               onClick={() => navigator.clipboard.writeText('git add . && git commit -m "Init Shopify App" && git push origin main')}
+                               className="absolute top-4 right-4 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                             ><Copy size={14}/></button>
 
-                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
-                             Step 3: Push to GitHub
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>git add .</span>
+                             </div>
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>git commit -m "Init Shopify App"</span>
+                             </div>
+                             <div className="flex gap-2">
+                                <span className="text-indigo-400 select-none">$</span>
+                                <span>git push origin main</span>
+                             </div>
                           </div>
-                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
-                             <span className="text-indigo-400">$</span> git add .<br/>
-                             <span className="text-indigo-400">$</span> git commit -m "Initial Shopify App Setup"<br/>
-                             <span className="text-indigo-400">$</span> git push origin main
-                          </div>
-                       </div>
+                    </div>
 
-                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
-                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
-                             Step 4: Connect to Vercel
+                    {/* STEP 4 */}
+                    <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center">
+                             <span className="font-bold text-sm text-slate-200">Step 4: Connect to Vercel</span>
+                             <span className="text-xs text-slate-500 uppercase font-mono">Browser</span>
                           </div>
-                          <div className="p-6 text-sm text-slate-400 space-y-2">
-                             <ol className="list-decimal list-inside space-y-2">
-                                <li>Go to <a href="https://vercel.com/new" target="_blank" className="text-indigo-400 hover:underline">vercel.com/new</a></li>
-                                <li>Under <strong>Import Git Repository</strong>, find <code>dollarapp-blog</code>.</li>
-                                <li>Click <strong>Import</strong>.</li>
-                                <li>Framework Preset: Select <strong>Remix</strong>.</li>
-                                <li>Click <strong>Deploy</strong>.</li>
+                          <div className="p-6 text-sm text-slate-300 space-y-4">
+                             <ol className="list-decimal list-inside space-y-3">
+                                <li>
+                                   Go to <a href="https://vercel.com/new" target="_blank" className="text-indigo-400 hover:text-white underline font-bold">vercel.com/new</a>
+                                </li>
+                                <li>
+                                   Search for <strong>dollarapp-blog</strong> under "Import Git Repository".
+                                </li>
+                                <li>
+                                   Click <span className="bg-white text-black px-2 py-0.5 rounded text-xs font-bold uppercase">Import</span>.
+                                </li>
+                                <li>
+                                   Framework Preset: Choose <span className="font-bold text-white">Remix</span>.
+                                </li>
+                                <li>
+                                   Click <span className="bg-white text-black px-2 py-0.5 rounded text-xs font-bold uppercase">Deploy</span>.
+                                </li>
                              </ol>
+                             <div className="text-xs text-emerald-400 flex items-center gap-2 mt-4">
+                                <CheckCircle2 size={14} /> After this, your app will be live on the web!
+                             </div>
                           </div>
-                       </div>
                     </div>
                  </div>
                )}
