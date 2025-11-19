@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import AppIdeaGenerator from './components/AppIdeaGenerator';
 import Portfolio from './components/Portfolio';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
+import InvoiceAppDemo from './components/demos/InvoiceAppDemo';
 import { Terminal } from 'lucide-react';
 
+type Page = 'landing' | 'invoice-app';
+
 const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<Page>('landing');
+
+  // Dedicated Application Page View
+  if (currentPage === 'invoice-app') {
+    return <InvoiceAppDemo onExit={() => setCurrentPage('landing')} />;
+  }
+
+  // Main Landing Page View
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-brand-500 selection:text-white">
       {/* Sticky Nav */}
@@ -22,9 +33,12 @@ const App: React.FC = () => {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
             <a href="#ideas" className="hover:text-white transition-colors">Ideas</a>
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-            <a href="#contact" className="px-4 py-2 bg-white text-slate-950 rounded-lg hover:bg-slate-200 transition-colors font-bold">
+            <button 
+              onClick={() => window.location.href='#contact'}
+              className="px-4 py-2 bg-white text-slate-950 rounded-lg hover:bg-slate-200 transition-colors font-bold"
+            >
               Join for $1
-            </a>
+            </button>
           </div>
         </div>
       </nav>
@@ -35,7 +49,7 @@ const App: React.FC = () => {
       {/* The Gemini Powered Section */}
       <AppIdeaGenerator />
       
-      <Portfolio />
+      <Portfolio onOpenApp={() => setCurrentPage('invoice-app')} />
       <Pricing />
       <Contact />
 

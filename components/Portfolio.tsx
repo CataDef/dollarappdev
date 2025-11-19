@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PortfolioItem } from '../types';
-import InvoiceAppDemo from './demos/InvoiceAppDemo';
-import { Play, X } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 const items: PortfolioItem[] = [
   {
@@ -24,9 +23,11 @@ const items: PortfolioItem[] = [
   }
 ];
 
-const Portfolio: React.FC = () => {
-  const [showDemo, setShowDemo] = useState(false);
+interface PortfolioProps {
+  onOpenApp: () => void;
+}
 
+const Portfolio: React.FC<PortfolioProps> = ({ onOpenApp }) => {
   return (
     <section className="py-24 bg-slate-900 border-t border-slate-800 relative">
       <div className="container mx-auto px-6">
@@ -53,11 +54,11 @@ const Portfolio: React.FC = () => {
                 {idx === 0 && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-950/60 backdrop-blur-sm">
                      <button 
-                       onClick={() => setShowDemo(true)}
-                       className="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all"
+                       onClick={onOpenApp}
+                       className="px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all shadow-lg shadow-brand-600/50"
                      >
                        <Play size={16} fill="currentColor" />
-                       Try Live Demo
+                       Launch App
                      </button>
                   </div>
                 )}
@@ -71,29 +72,6 @@ const Portfolio: React.FC = () => {
           ))}
         </div>
       </div>
-
-      {/* Demo Modal Overlay */}
-      {showDemo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-xl shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-              <h3 className="font-bold text-gray-800 flex items-center gap-2">
-                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded uppercase tracking-wider">Demo</span>
-                Pro PDF Invoices
-              </h3>
-              <button 
-                onClick={() => setShowDemo(false)}
-                className="p-2 hover:bg-gray-200 rounded-full text-gray-500 transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto bg-gray-100 p-6">
-              <InvoiceAppDemo />
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

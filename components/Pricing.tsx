@@ -42,7 +42,7 @@ const Pricing: React.FC = () => {
           </a>
           
           <p className="text-center text-xs text-slate-500 mt-6">
-            *Server costs for high-traffic apps (>10k users) may be billed separately.
+            *Server costs for high-traffic apps (&gt;10k users) may be billed separately.
           </p>
         </div>
       </div>
