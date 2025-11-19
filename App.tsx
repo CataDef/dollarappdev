@@ -7,9 +7,10 @@ import Pricing from './components/Pricing';
 import Contact from './components/Contact';
 import InvoiceAppDemo from './components/demos/InvoiceAppDemo';
 import SocialProofDemo from './components/demos/SocialProofDemo';
+import BlogGenDemo from './components/demos/BlogGenDemo';
 import { Terminal } from 'lucide-react';
 
-type Page = 'landing' | 'invoice-app' | 'social-proof';
+type Page = 'landing' | 'invoice-app' | 'social-proof' | 'blog-gen';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>('landing');
@@ -22,6 +23,11 @@ const App: React.FC = () => {
   // Dedicated Social Proof Application Page View
   if (currentPage === 'social-proof') {
     return <SocialProofDemo onExit={() => setCurrentPage('landing')} />;
+  }
+
+  // Dedicated Blog Generator Page View
+  if (currentPage === 'blog-gen') {
+    return <BlogGenDemo onExit={() => setCurrentPage('landing')} />;
   }
 
   // Main Landing Page View

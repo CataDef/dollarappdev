@@ -4,6 +4,13 @@ import { Play } from 'lucide-react';
 
 const items: PortfolioItem[] = [
   {
+    id: 'blog-gen',
+    title: "AI Blog & SEO Autopilot",
+    description: "Fully automated SEO content machine. Generates 1200+ word articles, DALL-E images, and Schema.org markup automatically.",
+    category: "SEO & Content",
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=800&h=500"
+  },
+  {
     id: 'invoice-app',
     title: "Pro PDF Invoices & Docs",
     description: "Auto-generate professional PDF invoices, receipts, packing slips, and return forms. Fully customizable templates.",
