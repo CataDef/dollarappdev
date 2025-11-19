@@ -3,7 +3,7 @@ import {
   ArrowLeft, LayoutDashboard, FileText, Settings, Rocket, 
   CheckCircle2, Bot, Image as ImageIcon, Globe, DollarSign,
   BarChart3, Database, Terminal, Play, Code, RefreshCw, Sparkles,
-  Github, ExternalLink
+  Github, ExternalLink, Copy, MonitorPlay
 } from 'lucide-react';
 
 interface BlogGenDemoProps {
@@ -16,6 +16,7 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [guideMode, setGuideMode] = useState<'sim' | 'real'>('sim'); // 'sim' = Animation, 'real' = Actual Instructions
   
   // Deploy Sim State
   const [deployLogs, setDeployLogs] = useState<string[]>([]);
@@ -407,51 +408,140 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
                   </div>
                </div>
 
-               <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-2xl h-[500px]">
-                  <div className="bg-slate-950 px-4 py-3 flex items-center justify-between border-b border-slate-800">
-                     <div className="flex items-center gap-2">
-                        <div className="flex gap-1.5">
-                           <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                           <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                           <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <span className="text-xs font-mono text-slate-400 ml-2">terminal — deploy</span>
-                     </div>
-                     <button 
-                       onClick={handleDeploy} 
-                       className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition-colors"
-                     >
-                       START DEPLOYMENT
-                     </button>
-                  </div>
-                  
-                  <div className="flex-1 p-4 font-mono text-xs overflow-y-auto bg-black/50 text-slate-300 space-y-1">
-                     {deployLogs.length === 0 && (
-                       <div className="text-slate-500 flex flex-col items-center justify-center h-full gap-4">
-                          <Terminal size={48} className="opacity-20" />
-                          <p>Ready to deploy from <span className="text-indigo-400">CataDef/dollarapp-blog</span></p>
-                          <p>Click "START DEPLOYMENT" to push to Vercel.</p>
-                       </div>
-                     )}
-                     {deployLogs.map((log, i) => (
-                       <div key={i} className={`${log.startsWith('$') ? 'text-white font-bold mt-4' : 'text-emerald-500/80'}`}>
-                          {log}
-                       </div>
-                     ))}
-                     <div ref={logsEndRef} />
+               {/* Mode Toggle */}
+               <div className="flex justify-center mb-6">
+                  <div className="bg-slate-900 p-1 rounded-lg flex border border-slate-800">
+                    <button 
+                      onClick={() => setGuideMode('sim')}
+                      className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${guideMode === 'sim' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                    >
+                      Animation Demo
+                    </button>
+                    <button 
+                      onClick={() => setGuideMode('real')}
+                      className={`px-4 py-2 rounded-md text-sm font-bold transition-all flex items-center gap-2 ${guideMode === 'real' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                    >
+                      <Code size={16} /> Real Implementation Guide
+                    </button>
                   </div>
                </div>
 
-               <div className="mt-8 p-6 bg-blue-900/20 border border-blue-500/30 rounded-xl flex gap-4">
-                  <Database className="text-blue-400 shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-white mb-1">Database Requirement</h4>
-                    <p className="text-sm text-slate-400">
-                      This app requires a PostgreSQL database (e.g., Railway or Supabase) to store user preferences and blog history. 
-                      The deployment script above assumes a `DATABASE_URL` environment variable is set.
-                    </p>
-                  </div>
-               </div>
+               {/* --- MODE: SIMULATION --- */}
+               {guideMode === 'sim' && (
+                <>
+                 <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-2xl h-[500px]">
+                    <div className="bg-slate-950 px-4 py-3 flex items-center justify-between border-b border-slate-800">
+                      <div className="flex items-center gap-2">
+                          <div className="flex gap-1.5">
+                            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                          </div>
+                          <span className="text-xs font-mono text-slate-400 ml-2">terminal — deploy</span>
+                      </div>
+                      <button 
+                        onClick={handleDeploy} 
+                        className="text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded transition-colors"
+                      >
+                        START SIMULATION
+                      </button>
+                    </div>
+                    
+                    <div className="flex-1 p-4 font-mono text-xs overflow-y-auto bg-black/50 text-slate-300 space-y-1">
+                      {deployLogs.length === 0 && (
+                        <div className="text-slate-500 flex flex-col items-center justify-center h-full gap-4">
+                            <Terminal size={48} className="opacity-20" />
+                            <p>Simulating deployment for <span className="text-indigo-400">CataDef/dollarapp-blog</span></p>
+                        </div>
+                      )}
+                      {deployLogs.map((log, i) => (
+                        <div key={i} className={`${log.startsWith('$') ? 'text-white font-bold mt-4' : 'text-emerald-500/80'}`}>
+                            {log}
+                        </div>
+                      ))}
+                      <div ref={logsEndRef} />
+                    </div>
+                 </div>
+                 <div className="mt-6 text-center text-slate-500 text-xs italic">
+                    *This simulates what happens when you push code to Vercel.
+                 </div>
+                </>
+               )}
+
+               {/* --- MODE: REAL GUIDE --- */}
+               {guideMode === 'real' && (
+                 <div className="space-y-6 animate-in slide-in-from-right-4">
+                    <div className="bg-indigo-900/20 border border-indigo-500/30 p-4 rounded-lg flex gap-3">
+                       <MonitorPlay className="text-indigo-400 shrink-0" size={24} />
+                       <div>
+                          <h3 className="font-bold text-white">Ready to build the real app?</h3>
+                          <p className="text-sm text-slate-400 mt-1">
+                             Follow these steps on your local computer (using VS Code) to fill your 
+                             <span className="font-mono text-white bg-slate-800 px-1 rounded mx-1">dollarapp-blog</span> 
+                             repository with the actual Shopify App code.
+                          </p>
+                       </div>
+                    </div>
+
+                    <div className="space-y-4">
+                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
+                             Step 1: Clone your repository
+                          </div>
+                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
+                             <button 
+                               onClick={() => navigator.clipboard.writeText('git clone https://github.com/CataDef/dollarapp-blog.git')}
+                               className="absolute top-2 right-2 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                             ><Copy size={12}/></button>
+                             <span className="text-indigo-400">$</span> git clone https://github.com/CataDef/dollarapp-blog.git<br/>
+                             <span className="text-indigo-400">$</span> cd dollarapp-blog
+                          </div>
+                       </div>
+
+                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
+                             Step 2: Initialize Shopify App (Remix Template)
+                          </div>
+                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
+                             <button 
+                               onClick={() => navigator.clipboard.writeText('npm init @shopify/app@latest')}
+                               className="absolute top-2 right-2 p-2 bg-slate-800 rounded hover:bg-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                             ><Copy size={12}/></button>
+                             <span className="text-slate-500"># This creates the actual app code</span><br/>
+                             <span className="text-indigo-400">$</span> npm init @shopify/app@latest<br/>
+                             <span className="text-slate-500"># Follow prompt: Name it "dollarapp-blog", select "Remix"</span>
+                          </div>
+                       </div>
+
+                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
+                             Step 3: Push to GitHub
+                          </div>
+                          <div className="p-4 bg-black font-mono text-xs text-slate-300 relative group">
+                             <span className="text-indigo-400">$</span> git add .<br/>
+                             <span className="text-indigo-400">$</span> git commit -m "Initial Shopify App Setup"<br/>
+                             <span className="text-indigo-400">$</span> git push origin main
+                          </div>
+                       </div>
+
+                       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+                          <div className="px-4 py-2 bg-slate-950 border-b border-slate-800 font-bold text-sm text-slate-300">
+                             Step 4: Connect to Vercel
+                          </div>
+                          <div className="p-6 text-sm text-slate-400 space-y-2">
+                             <ol className="list-decimal list-inside space-y-2">
+                                <li>Go to <a href="https://vercel.com/new" target="_blank" className="text-indigo-400 hover:underline">vercel.com/new</a></li>
+                                <li>Under <strong>Import Git Repository</strong>, find <code>dollarapp-blog</code>.</li>
+                                <li>Click <strong>Import</strong>.</li>
+                                <li>Framework Preset: Select <strong>Remix</strong>.</li>
+                                <li>Click <strong>Deploy</strong>.</li>
+                             </ol>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+               )}
+
             </div>
           )}
 
