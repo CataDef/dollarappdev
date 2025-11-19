@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, LayoutDashboard, FileText, Settings, Rocket, 
   CheckCircle2, Bot, Image as ImageIcon, Globe, DollarSign,
-  BarChart3, Database, Terminal, Play, Code, RefreshCw, Sparkles
+  BarChart3, Database, Terminal, Play, Code, RefreshCw, Sparkles,
+  Github, ExternalLink
 } from 'lucide-react';
 
 interface BlogGenDemoProps {
@@ -40,17 +41,21 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
   const handleDeploy = () => {
     setDeployLogs([]);
     const steps = [
-      { msg: '$ git clone https://github.com/dollarapp/dollarapp-blog.git', delay: 500 },
+      { msg: '$ git clone https://github.com/CataDef/dollarapp-blog.git', delay: 500 },
       { msg: 'Cloning into \'dollarapp-blog\'...', delay: 1200 },
-      { msg: '$ cd dollarapp-blog', delay: 1800 },
-      { msg: '$ npm install', delay: 2500 },
-      { msg: 'added 842 packages in 3s', delay: 4000 },
-      { msg: '$ vercel deploy --prod', delay: 4800 },
-      { msg: 'Vercel CLI 32.5.0', delay: 5500 },
-      { msg: 'Building site...', delay: 6500 },
-      { msg: 'Running "build" command...', delay: 7200 },
-      { msg: 'PostgreSQL connected: fly.io/dollarapp-db', delay: 8000 },
-      { msg: '✔ Production: https://dollarapp-blog.vercel.app', delay: 9500 }
+      { msg: 'Remote: Enumerating objects: 42, done.', delay: 1600 },
+      { msg: 'Remote: Total 42 (delta 12), reused 38 (delta 8)', delay: 1900 },
+      { msg: '$ cd dollarapp-blog', delay: 2400 },
+      { msg: '$ npm install', delay: 3000 },
+      { msg: 'added 842 packages in 3s', delay: 4200 },
+      { msg: '$ vercel link --yes', delay: 5000 },
+      { msg: 'Linked to project cata-def/dollarapp-blog (Scope: cata-def)', delay: 5800 },
+      { msg: '$ vercel deploy --prod', delay: 6500 },
+      { msg: 'Vercel CLI 33.1.0', delay: 7200 },
+      { msg: 'Building site...', delay: 8000 },
+      { msg: 'Running "build" command...', delay: 8800 },
+      { msg: 'PostgreSQL connected: fly.io/dollarapp-db', delay: 9500 },
+      { msg: '✔ Production: https://dollarapp-blog.vercel.app', delay: 10500 }
     ];
 
     steps.forEach(step => {
@@ -377,6 +382,31 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
           {/* --- TAB: DEPLOY --- */}
           {activeTab === 'deploy' && (
             <div className="max-w-3xl mx-auto animate-in slide-in-from-right-4">
+               
+               {/* Repo Connection Status */}
+               <div className="mb-6 bg-slate-900 border border-slate-800 p-4 rounded-lg flex items-center justify-between">
+                  <div>
+                     <div className="text-xs text-slate-500 font-bold uppercase mb-1">Connected Repository</div>
+                     <div className="flex items-center gap-2 text-sm text-white font-mono">
+                        <Github size={16} />
+                        CataDef/dollarapp-blog
+                     </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                     <a 
+                        href="https://github.com/CataDef/dollarapp-blog" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+                     >
+                        View Code <ExternalLink size={12} />
+                     </a>
+                     <div className="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                        <CheckCircle2 size={14} /> Linked
+                     </div>
+                  </div>
+               </div>
+
                <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col shadow-2xl h-[500px]">
                   <div className="bg-slate-950 px-4 py-3 flex items-center justify-between border-b border-slate-800">
                      <div className="flex items-center gap-2">
@@ -399,8 +429,8 @@ const BlogGenDemo: React.FC<BlogGenDemoProps> = ({ onExit }) => {
                      {deployLogs.length === 0 && (
                        <div className="text-slate-500 flex flex-col items-center justify-center h-full gap-4">
                           <Terminal size={48} className="opacity-20" />
-                          <p>Ready to deploy 'dollarapp-blog' to Vercel.</p>
-                          <p>Click "START DEPLOYMENT" to begin.</p>
+                          <p>Ready to deploy from <span className="text-indigo-400">CataDef/dollarapp-blog</span></p>
+                          <p>Click "START DEPLOYMENT" to push to Vercel.</p>
                        </div>
                      )}
                      {deployLogs.map((log, i) => (
